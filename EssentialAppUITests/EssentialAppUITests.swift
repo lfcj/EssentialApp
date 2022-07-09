@@ -1,10 +1,3 @@
-//
-//  EssentialAppUITests.swift
-//  EssentialAppUITests
-//
-//  Created by Luisa Fernanda Castaño on 09.07.22.
-//
-
 import XCTest
 
 class EssentialAppUITests: XCTestCase {
