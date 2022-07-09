@@ -1,2 +1,3 @@
 # EssentialApp
-Final product using EssentialFeed
+
+Final product using EssentialFeed: https://github.com/lfcj/EssentialFeed/
