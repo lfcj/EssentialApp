@@ -73,20 +73,6 @@ private extension FeedLoaderWithFallbackCompositeTests {
         wait(for: [exp], timeout: 1.0)
     }
 
-    func uniqueFeed() -> [FeedImage] {
-        [FeedImage(id: UUID(), description: "any", location: "any", url: anyURL())]
-    }
-
-    func anyURL() -> URL {
-        URL(string: "https://www.any-url.com")!
-    }
-
-    func trackForMemoryLeaks(_ instance: AnyObject, file: StaticString = #file, line: UInt = #line) {
-        addTeardownBlock { [weak instance] in
-            XCTAssertNil(instance, "Instance should have been deallocated. Potential memory leak.", file: file, line: line)
-        }
-    }
-
     final class LoaderStub: FeedLoader {
         private let result: FeedLoader.Result
 
@@ -97,4 +83,5 @@ private extension FeedLoaderWithFallbackCompositeTests {
             completion(result)
         }
     }
+
 }
