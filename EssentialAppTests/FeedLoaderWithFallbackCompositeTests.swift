@@ -50,6 +50,15 @@ class FeedLoaderWithFallbackCompositeTests: XCTestCase {
         expect(sut, toCompleteWith: expectedResult)
     }
 
+    func test_load_deliversFallbackErrorWhenBothPrimaryAndFallbackLoadsFails() {
+        let primaryError = NSError(domain: "primary error", code: 0)
+        let fallbackError = NSError(domain: "fallback error", code: 0)
+        let expectedResult = FeedLoader.Result.failure(fallbackError)
+        let sut = makeSUT(primaryResult: .failure(primaryError), fallbackResult: expectedResult)
+
+        expect(sut, toCompleteWith: expectedResult)
+    }
+
 }
 
 private extension FeedLoaderWithFallbackCompositeTests {
@@ -82,8 +91,8 @@ private extension FeedLoaderWithFallbackCompositeTests {
             switch (receivedResult, expectedResult) {
             case (.success(let receivedFeed), .success(let expectedFeed)):
                 XCTAssertEqual(receivedFeed, expectedFeed, file: file, line: line)
-            case (.failure, .failure):
-                break
+            case (.failure(let receivedError), .failure(let expectedError)):
+                XCTAssertEqual(receivedError as NSError, expectedError as NSError, file: file, line: line)
             default:
                 XCTFail("Expected \(expectedResult) and received \(receivedResult)", file: file, line: line)
             }
