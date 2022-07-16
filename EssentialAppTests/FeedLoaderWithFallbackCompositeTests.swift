@@ -22,9 +22,7 @@ class FeedLoaderWithFallbackCompositeTests: XCTestCase {
     func test_load_deliversPrimaryFeedOnPrimarySuccess() {
         let primaryFeed = uniqueFeed()
         let fallbackFeed = uniqueFeed()
-        let primaryLoader = LoaderStub(result: .success(primaryFeed))
-        let fallbackLoader = LoaderStub(result: .success(fallbackFeed))
-        let sut = FeedLoaderWithFallbackComposite(primaryLoader: primaryLoader, fallbackLoader: fallbackLoader)
+        let sut = makeSUT(primaryResult: .success(primaryFeed), fallbackResult: .success(fallbackFeed))
 
         let exp = expectation(description: "Expect remote feed")
         sut.load { result in
@@ -38,16 +36,42 @@ class FeedLoaderWithFallbackCompositeTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
     }
 
-    
-    private func uniqueFeed() -> [FeedImage] {
+}
+
+private extension FeedLoaderWithFallbackCompositeTests {
+
+    func makeSUT(
+        primaryResult: FeedLoader.Result,
+        fallbackResult: FeedLoader.Result,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) -> FeedLoaderWithFallbackComposite {
+        let primaryLoader = LoaderStub(result: primaryResult)
+        let fallbackLoader = LoaderStub(result: fallbackResult)
+        let sut = FeedLoaderWithFallbackComposite(primaryLoader: primaryLoader, fallbackLoader: fallbackLoader)
+
+        trackForMemoryLeaks(primaryLoader, file: file, line: line)
+        trackForMemoryLeaks(fallbackLoader, file: file, line: line)
+        trackForMemoryLeaks(sut, file: file, line: line)
+
+        return sut
+    }
+
+    func uniqueFeed() -> [FeedImage] {
         [FeedImage(id: UUID(), description: "any", location: "any", url: anyURL())]
     }
 
-    private func anyURL() -> URL {
+    func anyURL() -> URL {
         URL(string: "https://www.any-url.com")!
     }
 
-    private final class LoaderStub: FeedLoader {
+    func trackForMemoryLeaks(_ instance: AnyObject, file: StaticString = #file, line: UInt = #line) {
+        addTeardownBlock { [weak instance] in
+            XCTAssertNil(instance, "Instance should have been deallocated. Potential memory leak.", file: file, line: line)
+        }
+    }
+
+    final class LoaderStub: FeedLoader {
         private let result: FeedLoader.Result
 
         init(result: FeedLoader.Result) {
