@@ -53,6 +53,16 @@ final class FeedImageLoaderWithFallbackCompositeTests: XCTestCase {
 
         expect(sut, toCompleteWith: expectedResult)
     }
+
+    func test_load_deliversFallbackErrorWhenBothPrimaryAndFallbackLoadsFails() {
+        let primaryError = NSError(domain: "primary error", code: 0)
+        let fallbackError = NSError(domain: "fallback error", code: 0)
+        let expectedResult = FeedImageDataLoader.Result.failure(fallbackError)
+        let sut = makeSUT(primaryResult: .failure(primaryError), fallbackResult: expectedResult)
+
+        expect(sut, toCompleteWith: expectedResult)
+    }
+
 }
 
 private extension FeedImageLoaderWithFallbackCompositeTests {
