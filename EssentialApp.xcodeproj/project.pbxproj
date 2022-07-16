@@ -25,6 +25,7 @@
 		84F5FE872883223B00AA82AE /* FeedImageLoaderWithFallbackCompositeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F5FE862883223B00AA82AE /* FeedImageLoaderWithFallbackCompositeTests.swift */; };
 		84F5FE8A2883229E00AA82AE /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F5FE892883229E00AA82AE /* Helpers.swift */; };
 		84F5FE8C288322C700AA82AE /* XCTTestCase+TrackForMemoryLeaks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F5FE8B288322C700AA82AE /* XCTTestCase+TrackForMemoryLeaks.swift */; };
+		84F5FE90288346DB00AA82AE /* FeedImageLoaderWithFallbackComposite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F5FE8F288346DB00AA82AE /* FeedImageLoaderWithFallbackComposite.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,6 +81,7 @@
 		84F5FE862883223B00AA82AE /* FeedImageLoaderWithFallbackCompositeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageLoaderWithFallbackCompositeTests.swift; sourceTree = "<group>"; };
 		84F5FE892883229E00AA82AE /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		84F5FE8B288322C700AA82AE /* XCTTestCase+TrackForMemoryLeaks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTTestCase+TrackForMemoryLeaks.swift"; sourceTree = "<group>"; };
+		84F5FE8F288346DB00AA82AE /* FeedImageLoaderWithFallbackComposite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageLoaderWithFallbackComposite.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				40D666E72879546300E2151B /* AppDelegate.swift */,
+				84F5FE8F288346DB00AA82AE /* FeedImageLoaderWithFallbackComposite.swift */,
 				84F5FE842883208500AA82AE /* FeedLoaderWithFallbackComposite.swift */,
 				40D666E92879546300E2151B /* SceneDelegate.swift */,
 				40D666EB2879546300E2151B /* ViewController.swift */,
@@ -319,6 +322,7 @@
 				40D666E82879546300E2151B /* AppDelegate.swift in Sources */,
 				84F5FE852883208600AA82AE /* FeedLoaderWithFallbackComposite.swift in Sources */,
 				40D666EA2879546300E2151B /* SceneDelegate.swift in Sources */,
+				84F5FE90288346DB00AA82AE /* FeedImageLoaderWithFallbackComposite.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
