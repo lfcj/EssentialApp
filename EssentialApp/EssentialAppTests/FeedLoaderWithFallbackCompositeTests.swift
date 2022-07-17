@@ -41,8 +41,8 @@ private extension FeedLoaderWithFallbackCompositeTests {
         file: StaticString = #file,
         line: UInt = #line
     ) -> FeedLoaderWithFallbackComposite {
-        let primaryLoader = LoaderStub(result: primaryResult)
-        let fallbackLoader = LoaderStub(result: fallbackResult)
+        let primaryLoader = FeedLoaderStub(result: primaryResult)
+        let fallbackLoader = FeedLoaderStub(result: fallbackResult)
         let sut = FeedLoaderWithFallbackComposite(primaryLoader: primaryLoader, fallbackLoader: fallbackLoader)
 
         trackForMemoryLeaks(primaryLoader, file: file, line: line)
@@ -71,17 +71,6 @@ private extension FeedLoaderWithFallbackCompositeTests {
             exp.fulfill()
         }
         wait(for: [exp], timeout: 1.0)
-    }
-
-    final class LoaderStub: FeedLoader {
-        private let result: FeedLoader.Result
-
-        init(result: FeedLoader.Result) {
-            self.result = result
-        }
-        func load(completion: @escaping (Result<[FeedImage], Error>) -> Void) {
-            completion(result)
-        }
     }
 
 }
