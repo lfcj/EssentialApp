@@ -1,7 +1,9 @@
 import EssentialFeed
 import XCTest
 
-extension XCTestCase {
+protocol FeedLoaderTestCase: XCTestCase {}
+
+extension FeedLoaderTestCase {
 
     func expect(
         _ sut: FeedLoader,
