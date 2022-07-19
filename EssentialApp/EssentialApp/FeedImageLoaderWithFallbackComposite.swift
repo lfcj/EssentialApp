@@ -38,9 +38,5 @@ public final class FeedImageLoaderWithFallbackComposite: FeedImageDataLoader {
         }
         return taskWrapper
     }
-    
-    public func save(_ data: Data, for url: URL, completion: @escaping (SaveResult) -> Void) {
-        primaryLoader.save(data, for: url, completion: completion)
-    }
-    
+
 }

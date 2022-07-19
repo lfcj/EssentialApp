@@ -36,5 +36,4 @@ final class FeedImageDataLoaderSpy: FeedImageDataLoader {
         messages[index].completion(.failure(error))
     }
 
-    func save(_ data: Data, for url: URL, completion: @escaping (SaveResult) -> Void) {}
 }

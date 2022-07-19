@@ -31,8 +31,6 @@ public final class FeedImageDataLoaderCacheDecorator: FeedImageDataLoader {
         }
     }
 
-    public func save(_ data: Data, for url: URL, completion: @escaping (SaveResult) -> Void) {}
-
 }
 
 private extension FeedImageDataCache {
