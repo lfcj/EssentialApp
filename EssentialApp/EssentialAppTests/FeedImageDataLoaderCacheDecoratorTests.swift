@@ -2,51 +2,6 @@ import EssentialApp
 import EssentialFeed
 import XCTest
 
-protocol FeedImageDataCache {
-    typealias SaveResult = Swift.Result<Void, Swift.Error>
-    func save(_ data: Data, for url: URL, completion: @escaping (SaveResult) -> Void)
-}
-
-final class FeedImageDataLoaderCacheDecorator: FeedImageDataLoader {
-
-    private class TaskWrapper: FeedImageDataLoaderTask {
-        var wrapped: FeedImageDataLoaderTask?
-
-        func cancel() {
-            wrapped?.cancel()
-        }
-    }
-
-    private let decoratee: FeedImageDataLoader
-    private let cache: FeedImageDataCache
-
-    init(decoratee: FeedImageDataLoader, cache: FeedImageDataCache) {
-        self.decoratee = decoratee
-        self.cache = cache
-    }
-
-    func loadImageData(
-        from url: URL,
-        completion: @escaping (FeedImageDataLoader.Result) -> Void
-    ) -> FeedImageDataLoaderTask {
-        decoratee.loadImageData(from: url) { [weak self] result in
-            completion(result.map { imageData in
-                self?.cache.saveIgnoringResult(imageData, for: url)
-                return imageData
-            })
-        }
-    }
-
-    func save(_ data: Data, for url: URL, completion: @escaping (SaveResult) -> Void) {}
-
-}
-
-private extension FeedImageDataCache {
-    func saveIgnoringResult(_ data: Data, for url: URL) {
-        self.save(data, for: url) { _ in }
-    }
-}
-
 final class FeedImageDataLoaderCacheDecoratorTests: XCTestCase, FeedImageDataLoaderTestCase {
 
     func test_init_doesNotLoadImageData() {
