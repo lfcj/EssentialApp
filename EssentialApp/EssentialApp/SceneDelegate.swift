@@ -13,8 +13,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
 
-        let session = URLSession(configuration: .ephemeral)
-        let client = URLSessionHTTPClient(session: session)
+        let client = makeHTTPClient()
 
         let url = URL(string: "https://ile-api.essentialdeveloper.com/essential-feed/v1/feed")!
         let remoteFeedLoader = RemoteFeedLoader(url: url, client: client)
@@ -46,5 +45,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         )
     }
 
+    func makeHTTPClient() -> HTTPClient {
+        switch UserDefaults.standard.string(forKey: "connectivity") {
+        case "offline":
+            return AlwaysFailingHTTPClient()
+        default:
+            let session = URLSession(configuration: .ephemeral)
+            return URLSessionHTTPClient(session: session)
+        }
+    }
+
 }
 
+final class AlwaysFailingHTTPClient: HTTPClient {
+    private class Task: HTTPClientTask {
+        func cancel() {}
+    }
+    func get(from url: URL, completion: @escaping (HTTPClient.Result) -> Void) -> HTTPClientTask {
+        let error = NSError(domain: "offline", code: -1)
+        completion(.failure(error))
+        return Task()
+    }
+}
