@@ -41,7 +41,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     decoratee: remoteImageLoader,
                     cache: localImageLoader
                 ),
-                fallbackLoader: remoteImageLoader
+                fallbackLoader: localImageLoader
             )
         )
     }
