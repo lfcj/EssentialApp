@@ -31,7 +31,7 @@ class EssentialAppUIAcceptanceTests: XCTestCase {
 
     func test_onLaunch_displaysEmptyFeedWhenCusotmerHasNoConnectivityAndNoCache() {
         let app = XCUIApplication()
-        app.launchArguments = ["-connectivity", "offline"]
+        app.launchArguments = ["-reset", "-connectivity", "offline"]
         app.launch()
 
         let feedCells = app.cells.matching(identifier: "feed-image-cell")
