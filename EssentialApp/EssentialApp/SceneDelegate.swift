@@ -17,6 +17,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
 
+        configureWindow()
+    }
+
+    func configureWindow() {
         let client = makeHTTPClient()
 
         let url = URL(string: "https://ile-api.essentialdeveloper.com/essential-feed/v1/feed")!
@@ -27,20 +31,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let localFeedLoader = LocalFeedLoader(store: localStore, currentDate: Date.init)
         let localImageLoader = LocalFeedImageDataLoader(store: localStore)
 
-        window?.rootViewController = FeedUIComposer.feedComposed(
-            with: FeedLoaderWithFallbackComposite(
-                primaryLoader: FeedLoaderCacheDecorator(
-                    decoratee: remoteFeedLoader,
-                    cache: localFeedLoader
+        window?.rootViewController = UINavigationController(
+            rootViewController: FeedUIComposer.feedComposed(
+                with: FeedLoaderWithFallbackComposite(
+                    primaryLoader: FeedLoaderCacheDecorator(
+                        decoratee: remoteFeedLoader,
+                        cache: localFeedLoader
+                    ),
+                    fallbackLoader: localFeedLoader
                 ),
-                fallbackLoader: localFeedLoader
-            ),
-            imageLoader: FeedImageLoaderWithFallbackComposite(
-                primaryLoader: FeedImageDataLoaderCacheDecorator(
-                    decoratee: remoteImageLoader,
-                    cache: localImageLoader
-                ),
-                fallbackLoader: localImageLoader
+                imageLoader: FeedImageLoaderWithFallbackComposite(
+                    primaryLoader: FeedImageDataLoaderCacheDecorator(
+                        decoratee: remoteImageLoader,
+                        cache: localImageLoader
+                    ),
+                    fallbackLoader: localImageLoader
+                )
             )
         )
     }

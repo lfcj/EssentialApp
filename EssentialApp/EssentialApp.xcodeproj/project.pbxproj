@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4002A469289312A60052CEDB /* SceneDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4002A468289312A60052CEDB /* SceneDelegateTests.swift */; };
 		40D666E82879546300E2151B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D666E72879546300E2151B /* AppDelegate.swift */; };
 		40D666EA2879546300E2151B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D666E92879546300E2151B /* SceneDelegate.swift */; };
 		40D666EC2879546300E2151B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D666EB2879546300E2151B /* ViewController.swift */; };
@@ -69,6 +70,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4002A468289312A60052CEDB /* SceneDelegateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegateTests.swift; sourceTree = "<group>"; };
 		40D666E42879546300E2151B /* EssentialApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EssentialApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		40D666E72879546300E2151B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		40D666E92879546300E2151B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 				84F5FE862883223B00AA82AE /* FeedImageLoaderWithFallbackCompositeTests.swift */,
 				846F312028846AA80024C230 /* FeedLoaderCacheDecoratorTests.swift */,
 				8400A790288552D400EE9C46 /* FeedImageDataLoaderCacheDecoratorTests.swift */,
+				4002A468289312A60052CEDB /* SceneDelegateTests.swift */,
 			);
 			path = EssentialAppTests;
 			sourceTree = "<group>";
@@ -380,6 +383,7 @@
 				84F5FE8A2883229E00AA82AE /* Helpers.swift in Sources */,
 				84F5FE8C288322C700AA82AE /* XCTTestCase+TrackForMemoryLeaks.swift in Sources */,
 				846F312128846AA80024C230 /* FeedLoaderCacheDecoratorTests.swift in Sources */,
+				4002A469289312A60052CEDB /* SceneDelegateTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
