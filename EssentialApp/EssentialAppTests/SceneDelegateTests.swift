@@ -5,8 +5,7 @@ import XCTest
 class SceneDelegateTests: XCTestCase {
 
     func test_sceneWillConnectToSession_configuresRootViewController() {
-        let sut = SceneDelegate()
-        sut.window = UIWindow()
+        let sut = makeSUT()
 
         sut.configureWindow()
 
@@ -16,6 +15,20 @@ class SceneDelegateTests: XCTestCase {
 
         XCTAssertNotNil(rootNavigation)
         XCTAssertTrue(topController is FeedViewController)
+    }
+
+}
+
+// MARK: - Helpers
+
+private extension SceneDelegateTests {
+
+    func makeSUT(file: StaticString = #file, line: UInt = #line) -> SceneDelegate {
+        let sut = SceneDelegate()
+        sut.window = UIWindow()
+
+        trackForMemoryLeaks(sut, file: file, line: line)
+        return sut
     }
 
 }
