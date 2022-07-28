@@ -32,6 +32,22 @@ final class FeedAcceptanceTests: XCTestCase {
         XCTAssertEqual(offlineFeed.numberOfRenderedFeedImageViews(), 0)
     }
 
+    func test_onEnteringBackground_deletesExpiredFeedCache() {
+        let store = InMemoryFeedStore.withExpiredFeedCache
+
+        enterBackground(with: store)
+
+        XCTAssertNil(store.feedCache, "Expected to delete expired cache")
+    }
+
+    func test_onEnteringBackground_keepsNonExpiredFeedCache() {
+        let store = InMemoryFeedStore.withNonExpiredFeedCache
+
+        enterBackground(with: store)
+
+        XCTAssertNotNil(store.feedCache, "Expected to keep expired cache")
+    }
+
 }
 
 // MARK: - Helpers
@@ -61,6 +77,11 @@ private extension FeedAcceptanceTests {
         return sut
     }
 
+    func enterBackground(with store: InMemoryFeedStore) {
+        let sut = SceneDelegate(httpClient: HTTPClientStub.offline, store: store)
+        sut.sceneWillResignActive(UIApplication.shared.connectedScenes.first!)
+    }
+
     final class HTTPClientStub: HTTPClient {
         private class Task: HTTPClientTask {
             func cancel() {}
@@ -87,8 +108,12 @@ private extension FeedAcceptanceTests {
     }
 
     final class InMemoryFeedStore: FeedStore, FeedImageDataStore {
-        private var feedCache: CachedFeed?
+        private(set) var feedCache: CachedFeed?
         private var feedImageDataCache: [URL: Data] = [:]
+
+        private init(feedCache: CachedFeed? = nil) {
+            self.feedCache = feedCache
+        }
 
         func deleteCachedFeed(completion: @escaping DeletionCompletion) {
             feedCache = nil
@@ -115,6 +140,14 @@ private extension FeedAcceptanceTests {
 
         static var empty: InMemoryFeedStore {
             InMemoryFeedStore()
+        }
+
+        static var withExpiredFeedCache: InMemoryFeedStore {
+            InMemoryFeedStore(feedCache: (feed: [], timestamp: Date.distantPast))
+        }
+
+        static var withNonExpiredFeedCache: InMemoryFeedStore {
+            InMemoryFeedStore(feedCache: (feed: [], timestamp: Date.distantFuture))
         }
     }
 
