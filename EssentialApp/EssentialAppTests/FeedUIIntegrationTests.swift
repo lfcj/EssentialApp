@@ -74,6 +74,22 @@ class FeedUIIntegrationTests: XCTestCase {
         assertThat(sut, isRendering: [image0, image1, image2, image3])
     }
 
+    func test_loadFeedCompletion_rendersSuccessfullyLoadedEmptyFeedAfterNonEmptyFeed() {
+        let image0 = makeImage()
+        let image1 = makeImage()
+        let (sut, loader) = makeSUT()
+
+        sut.loadViewIfNeeded()
+        assertThat(sut, isRendering: [])
+
+        loader.completeFeedLoading(with: [image0, image1], at: 0)
+        assertThat(sut, isRendering: [image0, image1])
+
+        sut.simulateUserInitiatedFeedReload()
+        loader.completeFeedLoading(with: [], at: 1)
+        assertThat(sut, isRendering: [])
+    }
+
     func test_loadFeedCompletion_doesNotAlterCurrentRenderingStateOnError() {
         let image0 = makeImage()
         let (sut, loader) = makeSUT()
@@ -184,7 +200,7 @@ class FeedUIIntegrationTests: XCTestCase {
         XCTAssertEqual(view1.isShowingRetryAcition, true, "Expected retry action for second view once second image loading completes with error")
     }
 
-    func test_feedImageViewRetryButton_isvisibleOnInvalidImageData() {
+    func test_feedImageViewRetryButton_isVisibleOnInvalidImageData() {
         let (sut, loader) = makeSUT()
 
         sut.loadViewIfNeeded()
@@ -307,6 +323,9 @@ class FeedUIIntegrationTests: XCTestCase {
         file: StaticString = #file,
         line: UInt = #line
     ) {
+        sut.tableView.layoutIfNeeded()
+        RunLoop.main.run(until: Date())
+
         XCTAssertEqual(sut.numberOfRenderedFeedImageViews(), images.count)
         images.enumerated().forEach { index, image in
             assertThat(sut, hasViewConfiguredFor: image, at: index, file: file, line: line)
