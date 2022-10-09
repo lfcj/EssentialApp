@@ -73,7 +73,6 @@ private extension FeedAcceptanceTests {
         let sut = SceneDelegate(httpClient: httpClient, store: store)
         sut.window = UIWindow()
 
-        trackForMemoryLeaks(sut, file: file, line: line)
         return sut
     }
 

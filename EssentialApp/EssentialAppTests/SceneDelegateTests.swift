@@ -5,7 +5,7 @@ import XCTest
 class SceneDelegateTests: XCTestCase {
 
     func test_sceneWillConnectToSession_configuresRootViewController() {
-        let sut = makeSUT()
+        let (sut, _) = makeSUT()
 
         sut.configureWindow()
 
@@ -18,14 +18,11 @@ class SceneDelegateTests: XCTestCase {
     }
 
     func test_configureWindow_setsWindowAsKeyAndVisible() {
-         let window = UIWindow()
-         let sut = SceneDelegate()
-         sut.window = window
+        let (sut, window) = makeSUT()
 
-         sut.configureWindow()
+        sut.configureWindow()
 
-         XCTAssertTrue(window.isKeyWindow, "Expected window to be the key window")
-         XCTAssertFalse(window.isHidden, "Expected window to be visible")
+        XCTAssertEqual(window.makeKeyAndVisibleCallCount, 1, "Expected to make window key and visible")
      }
 
 }
@@ -34,12 +31,19 @@ class SceneDelegateTests: XCTestCase {
 
 private extension SceneDelegateTests {
 
-    func makeSUT(file: StaticString = #file, line: UInt = #line) -> SceneDelegate {
+    func makeSUT(file: StaticString = #file, line: UInt = #line) -> (SceneDelegate, UIWindowSpy) {
         let sut = SceneDelegate()
-        sut.window = UIWindow()
+        let window = UIWindowSpy()
+        sut.window = window
 
-        trackForMemoryLeaks(sut, file: file, line: line)
-        return sut
+        return (sut, window)
     }
 
+}
+
+private class UIWindowSpy: UIWindow {
+    var makeKeyAndVisibleCallCount = 0
+    override func makeKeyAndVisible() {
+        makeKeyAndVisibleCallCount = 1
+    }
 }
