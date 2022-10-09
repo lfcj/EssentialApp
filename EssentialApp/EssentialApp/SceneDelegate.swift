@@ -32,19 +32,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func configureWindow() {
-        let remoteImageLoader = RemoteFeedImageDataLoader(client: httpClient)
-        let localImageLoader = LocalFeedImageDataLoader(store: localStore)
-
         window?.rootViewController = UINavigationController(
             rootViewController: FeedUIComposer.feedComposed(
                 withFeedLoader: makeFeedLoaderWithLocalFallback,
-                imageLoader: FeedImageLoaderWithFallbackComposite(
-                    primaryLoader: FeedImageDataLoaderCacheDecorator(
-                        decoratee: remoteImageLoader,
-                        cache: localImageLoader
-                    ),
-                    fallbackLoader: localImageLoader
-                )
+                imageLoader: makeLocalImageLoaderWithRemoteFallback
             )
         )
     }
