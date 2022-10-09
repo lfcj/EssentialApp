@@ -5,9 +5,11 @@ import UIKit
 
 public final class FeedUIComposer {
     private init() {}
-    public static func feedComposed(with feedLoader: FeedLoader, imageLoader: FeedImageDataLoader) -> FeedViewController {
-        let feedLoaderDecorator = MainQueueDispatchDecorator(decoratee: feedLoader)
-        let feedLoaderPresentationAdapter = FeedLoaderPresentationAdapter(feedLoader: feedLoaderDecorator)
+    public static func feedComposed(
+        withFeedLoader feedLoader: @escaping () -> FeedLoader.Publisher,
+        imageLoader: FeedImageDataLoader
+    ) -> FeedViewController {
+        let feedLoaderPresentationAdapter = FeedLoaderPresentationAdapter(feedLoader: feedLoader)
 
         let feedViewController = makeFeedViewController(delegate: feedLoaderPresentationAdapter, title: FeedPresenter.title)
         let imageLoaderDecorator = MainQueueDispatchDecorator(decoratee: imageLoader)
