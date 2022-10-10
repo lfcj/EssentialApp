@@ -46,7 +46,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         localFeedLoader.validateCache { _ in }
     }
 
-    private func makeFeedLoaderWithLocalFallback() -> FeedLoader.Publisher  {
+    private func makeFeedLoaderWithLocalFallback() -> LocalFeedLoader.Publisher  {
         let url = URL(string: "https://ile-api.essentialdeveloper.com/essential-feed/v1/feed")!
 
         return httpClient

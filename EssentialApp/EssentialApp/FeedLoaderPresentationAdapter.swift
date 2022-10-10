@@ -5,9 +5,9 @@ import Foundation
 
 final class FeedLoaderPresentationAdapter: FeedViewControllerDelegate {
     var presenter: FeedPresenter?
-    private let feedLoader: () -> FeedLoader.Publisher
+    private let feedLoader: () -> LocalFeedLoader.Publisher
     private var cancellable: Cancellable?
-    init(feedLoader: @escaping () -> FeedLoader.Publisher) {
+    init(feedLoader: @escaping () -> LocalFeedLoader.Publisher) {
         self.feedLoader = feedLoader
     }
 

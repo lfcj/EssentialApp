@@ -6,7 +6,7 @@ import UIKit
 public final class FeedUIComposer {
     private init() {}
     public static func feedComposed(
-        withFeedLoader feedLoader: @escaping () -> FeedLoader.Publisher,
+        withFeedLoader feedLoader: @escaping () -> LocalFeedLoader.Publisher,
         imageLoader: @escaping (URL) -> FeedImageDataLoader.Publisher
     ) -> FeedViewController {
         let feedLoaderPresentationAdapter = FeedLoaderPresentationAdapter(feedLoader: feedLoader)
