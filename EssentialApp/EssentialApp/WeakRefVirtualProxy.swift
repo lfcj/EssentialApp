@@ -1,6 +1,7 @@
 import EssentialFeed
 import EssentialFeediOS
 import Foundation
+import UIKit
 
 final class WeakRefVirtualProxy<T: AnyObject> {
     private weak var object: T?
@@ -15,8 +16,8 @@ extension WeakRefVirtualProxy: ResourceLoadingView where T: ResourceLoadingView 
     }
 }
 
-extension WeakRefVirtualProxy: FeedImageView where T: FeedImageView {
-    func display(_ viewModel: FeedImageViewModel<T.Image>) {
+extension WeakRefVirtualProxy: ResourceView where T: ResourceView, T.ResourceViewModel == UIImage {
+    func display(_ viewModel: UIImage) {
         object?.display(viewModel)
     }
 }
