@@ -25,7 +25,7 @@ final class FeedViewAdapter: ResourceView {
                     loadingView: WeakRefVirtualProxy(view),
                     errorView: WeakRefVirtualProxy(view)
                 )
-                return view
+                return CellController(view)
             }
         )
     }
