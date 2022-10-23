@@ -15,7 +15,7 @@ extension FeedImageCell {
 
 }
 
-private extension UIButton {
+extension UIButton {
 
     func simulateTap() {
         allTargets.forEach { target in
