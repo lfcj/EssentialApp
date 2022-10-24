@@ -14,8 +14,6 @@ extension ListViewController {
         refreshControl?.isRefreshing == true
     }
 
-    var loadError: String { LoadResourcePresenter<Any, DummyView>.loadError }
-
     public override func loadViewIfNeeded() {
         super.loadViewIfNeeded()
 
@@ -32,8 +30,6 @@ extension ListViewController {
 // MARK: - Feed UI Helpers
 
 extension ListViewController {
-
-    var feedTitle: String { FeedPresenter.title }
 
     var feedImagesSection: Int { 0 }
 
@@ -90,8 +86,6 @@ extension ListViewController {
 
 extension ListViewController {
 
-    var commentsTitle: String { ImageCommentsPresenter.title }
-
     var commentsSection: Int { 0 }
 
     func numberOfRenderedComments() -> Int {
@@ -121,6 +115,9 @@ private extension UIRefreshControl {
 
 }
 
+var feedTitle: String { FeedPresenter.title }
+var commentsTitle: String { ImageCommentsPresenter.title }
+var loadError: String { LoadResourcePresenter<Any, DummyView>.loadError }
 private class DummyView: ResourceView {
     func display(_ viewModel: Any) {}
 }
