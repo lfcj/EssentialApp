@@ -11,6 +11,13 @@ extension ListViewController {
         refreshControl?.isRefreshing == true
     }
 
+    public override func loadViewIfNeeded() {
+        super.loadViewIfNeeded()
+
+        // To prevent the table view from rendering eagerly, we can set the tableView to a very small size so it cannot render anything until the methods to render are called.
+        self.tableView.frame = CGRect(origin: .zero, size: CGSize(width: 1, height: 1))
+    }
+
     var feedImagesSection: Int { 0 }
 
     func simulateUserInitiatedFeedReload() {
@@ -38,7 +45,7 @@ extension ListViewController {
     }
 
     func numberOfRenderedFeedImageViews() -> Int {
-        tableView.numberOfRows(inSection: feedImagesSection)
+        tableView.numberOfSections == 0 ? 0 : tableView.numberOfRows(inSection: feedImagesSection)
     }
 
     func feedImageView(at row: Int) -> UITableViewCell? {
