@@ -330,7 +330,7 @@ class FeedUIIntegrationTests: XCTestCase {
         return (sut, loader)
     }
 
-    func assertThat(
+    private func assertThat(
         _ sut: ListViewController,
         isRendering images: [FeedImage],
         file: StaticString = #file,

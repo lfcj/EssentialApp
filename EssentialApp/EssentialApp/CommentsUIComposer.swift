@@ -5,36 +5,34 @@ import EssentialFeediOS
 import UIKit
 
 public final class CommentsUIComposer {
+    private typealias CommentsPresentationAdapter = LoadResourcePresentationAdapter<[ImageComment], CommentsViewAdapter>
     private init() {}
     public static func commentsComposed(
-        withCommentsLoader commentsLoader: @escaping () -> LocalFeedLoader.Publisher
+        withCommentsLoader commentsLoader: @escaping () -> AnyPublisher<[ImageComment],  Error>
     ) -> ListViewController {
-        let feedLoaderPresentationAdapter = LoadResourcePresentationAdapter<[FeedImage], FeedViewAdapter>(loader: commentsLoader)
+        let commentLoaderPresentationAdapter = CommentsPresentationAdapter(loader: commentsLoader)
 
-        let feedViewController = makeFeedViewController(
-            onRefreshHandler: feedLoaderPresentationAdapter.loadResource,
+        let commentsViewController = makeCommentsViewController(
+            onRefreshHandler: commentLoaderPresentationAdapter.loadResource,
             title: ImageCommentsPresenter.title)
 
-        feedLoaderPresentationAdapter.presenter = LoadResourcePresenter(
-            mapper: FeedPresenter.map,
-            resourceView: FeedViewAdapter(
-                controller: feedViewController,
-                loader: { _ in Empty<Data, Error>().eraseToAnyPublisher() }
-            ),
-            loadingView: WeakRefVirtualProxy(feedViewController),
-            errorView: WeakRefVirtualProxy(feedViewController)
+        commentLoaderPresentationAdapter.presenter = LoadResourcePresenter(
+            mapper: { ImageCommentsPresenter.map($0) },
+            resourceView: CommentsViewAdapter(controller: commentsViewController),
+            loadingView: WeakRefVirtualProxy(commentsViewController),
+            errorView: WeakRefVirtualProxy(commentsViewController)
         )
-        return feedViewController
+        return commentsViewController
     }
 
-    private static func makeFeedViewController(onRefreshHandler: @escaping ListViewController.RefreshHandler, title: String) -> ListViewController {
+    private static func makeCommentsViewController(onRefreshHandler: @escaping ListViewController.RefreshHandler, title: String) -> ListViewController {
         let bundle = Bundle(for: ListViewController.self)
-        let storyboard = UIStoryboard(name: "Feed", bundle: bundle)
-        let feedViewController = storyboard.instantiateInitialViewController() as! ListViewController
-        feedViewController.title = title
-        feedViewController.onRefresh = onRefreshHandler
+        let storyboard = UIStoryboard(name: "ImageComments", bundle: bundle)
+        let commentsViewController = storyboard.instantiateInitialViewController() as! ListViewController
+        commentsViewController.title = title
+        commentsViewController.onRefresh = onRefreshHandler
 
-        return feedViewController
+        return commentsViewController
     }
 
 }

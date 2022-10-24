@@ -1,6 +1,8 @@
 import EssentialFeediOS
 import UIKit
 
+// MARK: - Shared UI Helpers
+
 extension ListViewController {
 
     var errorMessage: String? {
@@ -18,10 +20,20 @@ extension ListViewController {
         self.tableView.frame = CGRect(origin: .zero, size: CGSize(width: 1, height: 1))
     }
 
-    var feedImagesSection: Int { 0 }
-
     func simulateUserInitiatedReload() {
         refreshControl?.simulatePullToRefresh()
+    }
+
+}
+
+// MARK: - Feed UI Helpers
+
+extension ListViewController {
+
+    var feedImagesSection: Int { 0 }
+
+    func numberOfRenderedFeedImageViews() -> Int {
+        tableView.numberOfSections == 0 ? 0 : tableView.numberOfRows(inSection: feedImagesSection)
     }
 
     @discardableResult
@@ -42,10 +54,6 @@ extension ListViewController {
         delegate?.tableView?(tableView, didEndDisplaying: view!, forRowAt: index)
 
         return view
-    }
-
-    func numberOfRenderedFeedImageViews() -> Int {
-        tableView.numberOfSections == 0 ? 0 : tableView.numberOfRows(inSection: feedImagesSection)
     }
 
     func feedImageView(at row: Int) -> UITableViewCell? {
@@ -69,6 +77,27 @@ extension ListViewController {
         let dataSource = tableView.prefetchDataSource
         let index = IndexPath(row: row, section: feedImagesSection)
         dataSource?.tableView?(tableView, cancelPrefetchingForRowsAt: [index])
+    }
+
+}
+
+// MARK: - Comments UI Helpers
+
+extension ListViewController {
+
+    var commentsSection: Int { 0 }
+
+    func numberOfRenderedComments() -> Int {
+        tableView.numberOfSections == 0 ? 0 : tableView.numberOfRows(inSection: feedImagesSection)
+    }
+
+    func imageCommentView(at row: Int) -> UITableViewCell? {
+        guard numberOfRenderedComments() > row else {
+            return nil
+        }
+        let dataSource = tableView.dataSource
+        let index = IndexPath(row: row, section: commentsSection)
+        return dataSource?.tableView(tableView, cellForRowAt: index)
     }
 
 }
