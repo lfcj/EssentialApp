@@ -330,7 +330,7 @@ class FeedUIIntegrationTests: XCTestCase {
         return (sut, loader)
     }
 
-    private func assertThat(
+    func assertThat(
         _ sut: ListViewController,
         isRendering images: [FeedImage],
         file: StaticString = #file,
@@ -359,7 +359,7 @@ class FeedUIIntegrationTests: XCTestCase {
         XCTAssertEqual(view?.descriptionText, image.description, file: file, line: line)
     }
 
-    private func makeImage(description: String? = nil, location: String? = nil, url: URL = URL(string: "www.any-url.com")!) -> FeedImage {
+    func makeImage(description: String? = nil, location: String? = nil, url: URL = URL(string: "www.any-url.com")!) -> FeedImage {
         FeedImage(id: UUID(), description: description, location: location, url: url)
     }
 
