@@ -20,7 +20,7 @@ extension ListViewController {
 
     var feedImagesSection: Int { 0 }
 
-    func simulateUserInitiatedFeedReload() {
+    func simulateUserInitiatedReload() {
         refreshControl?.simulatePullToRefresh()
     }
 
