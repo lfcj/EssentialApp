@@ -4,7 +4,7 @@ import EssentialFeed
 import EssentialFeediOS
 import XCTest
 
-class CommonUIIntegrationTests: FeedUIIntegrationTests {
+class CommonUIIntegrationTests: XCTestCase {
     
     func test_commentsView_hasTitle() {
         let (sut, _) = makeSUT()
@@ -87,6 +87,19 @@ class CommonUIIntegrationTests: FeedUIIntegrationTests {
         wait(for: [exp], timeout: 1.0)
     }
 
+    func test_loadCommentsCompletion_rendersErrorMessageOnErrorUntilNextReload() {
+        let (sut, loader) = makeSUT()
+
+        sut.loadViewIfNeeded()
+        XCTAssertEqual(sut.errorMessage, nil)
+
+        loader.completeCommentsLoadingWithError(at: 0)
+        XCTAssertEqual(sut.errorMessage, loadError)
+
+        sut.errorView.simulateTap()
+        XCTAssertEqual(sut.errorMessage, nil)
+    }
+
     func test_loadCommentsCompletion_doesNotAlterCurrentRenderingStateOnError() {
         let comment = makeComment()
         let (sut, loader) = makeSUT()
@@ -100,20 +113,7 @@ class CommonUIIntegrationTests: FeedUIIntegrationTests {
         assertThat(sut, isRendering: [comment])
     }
 
-    override func test_loadFeedCompletion_rendersErrorMessageOnErrorUntilNextReload() {
-        let (sut, loader) = makeSUT()
-
-        sut.loadViewIfNeeded()
-        XCTAssertEqual(sut.errorMessage, nil)
-
-        loader.completeCommentsLoadingWithError(at: 0)
-        XCTAssertEqual(sut.errorMessage, loadError)
-
-        sut.errorView.simulateTap()
-        XCTAssertEqual(sut.errorMessage, nil)
-    }
-
-    override func test_tappingOnErrorView_hidesIt() {
+    func test_tappingOnErrorView_hidesIt() {
         let (sut, loader) = makeSUT()
 
         sut.loadViewIfNeeded()
