@@ -13,7 +13,7 @@ public final class CommentsUIComposer {
 
         let feedViewController = makeFeedViewController(
             onRefreshHandler: feedLoaderPresentationAdapter.loadResource,
-            title: FeedPresenter.title)
+            title: ImageCommentsPresenter.title)
 
         feedLoaderPresentationAdapter.presenter = LoadResourcePresenter(
             mapper: FeedPresenter.map,
