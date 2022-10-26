@@ -4,10 +4,14 @@ import EssentialFeediOS
 import UIKit
 
 public final class FeedUIComposer {
+    
+    public typealias SelectionHandler = (FeedImage) -> Void
+
     private init() {}
     public static func feedComposed(
         withFeedLoader feedLoader: @escaping () -> LocalFeedLoader.Publisher,
-        imageLoader: @escaping (URL) -> FeedImageDataLoader.Publisher
+        imageLoader: @escaping (URL) -> FeedImageDataLoader.Publisher,
+        selectionHandler: @escaping SelectionHandler
     ) -> ListViewController {
         let feedLoaderPresentationAdapter = LoadResourcePresentationAdapter<[FeedImage], FeedViewAdapter>(loader: feedLoader)
 
@@ -17,7 +21,7 @@ public final class FeedUIComposer {
 
         feedLoaderPresentationAdapter.presenter = LoadResourcePresenter(
             mapper: FeedPresenter.map,
-            resourceView: FeedViewAdapter(controller: feedViewController, loader: imageLoader),
+            resourceView: FeedViewAdapter(controller: feedViewController, loader: imageLoader, selectionHandler: selectionHandler),
             loadingView: WeakRefVirtualProxy(feedViewController),
             errorView: WeakRefVirtualProxy(feedViewController)
         )

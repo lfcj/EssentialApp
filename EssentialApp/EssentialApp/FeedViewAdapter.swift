@@ -4,21 +4,35 @@ import Foundation
 import UIKit
 
 final class FeedViewAdapter: ResourceView {
+    typealias FeedImageSelectionHandler = (FeedImage) -> Void
+
     private weak var controller: ListViewController?
     private let loader: (URL) -> FeedImageDataLoader.Publisher
+    private let selectionHandler: FeedImageSelectionHandler
 
     private typealias ImageDataPresentationAdapter = LoadResourcePresentationAdapter<Data, WeakRefVirtualProxy<FeedImageCellController>>
 
-    init(controller: ListViewController, loader: @escaping (URL) -> FeedImageDataLoader.Publisher) {
+    init(
+        controller: ListViewController,
+        loader: @escaping (URL) -> FeedImageDataLoader.Publisher,
+        selectionHandler: @escaping FeedImageSelectionHandler
+    ) {
         self.controller = controller
         self.loader = loader
+        self.selectionHandler = selectionHandler
     }
 
     func display(_ viewModel: FeedViewModel) {
         controller?.display(
             viewModel.feed.map { [loader] model in
                 let adapter = ImageDataPresentationAdapter(loader: { loader(model.url) })
-                let view = FeedImageCellController(viewModel: FeedImagePresenter.map(model), delegate: adapter)
+                let view = FeedImageCellController(
+                    viewModel: FeedImagePresenter.map(model),
+                    delegate: adapter,
+                    selectionHandler: { [selectionHandler] in
+                        selectionHandler(model)
+                    }
+                )
                 adapter.presenter = LoadResourcePresenter(
                     mapper: UIImage.tryMake,
                     resourceView: WeakRefVirtualProxy(view),
