@@ -95,7 +95,12 @@ extension ListViewController {
     var commentsSection: Int { 0 }
 
     func numberOfRenderedComments() -> Int {
-        tableView.numberOfSections == 0 ? 0 : tableView.numberOfRows(inSection: feedImagesSection)
+        tableView.numberOfSections == 0 ? 0 : tableView.numberOfRows(inSection: commentsSection)
+    }
+
+    func commentMessage(at row: Int) -> String? {
+        let view = imageCommentView(at: row) as? ImageCommentCell
+        return view?.messageLabel.text
     }
 
     func imageCommentView(at row: Int) -> UITableViewCell? {

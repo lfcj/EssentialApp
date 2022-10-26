@@ -160,7 +160,7 @@ class CommonUIIntegrationTests: XCTestCase {
     }
 
     private func makeComment(message: String = "any", username: String = "any") -> ImageComment {
-        ImageComment(id: UUID(), message: message, createdDate: Date(), username: username)
+        ImageComment(id: UUID(), message: message, createdDate: Date().addingTimeInterval(3600), username: username)
     }
 
     func assertThat(
@@ -202,7 +202,7 @@ class CommonUIIntegrationTests: XCTestCase {
         var loadCommentsCallCount: Int { requests.count }
         private(set) var cancelledImageURLs = [URL]()
 
-        func loadPublisher() -> AnyPublisher<[ImageComment], Error> {
+        func loadPublisher() -> CommentsUIComposer.ImageCommentsPublisher {
             let publisher = PassthroughSubject<[ImageComment], Error>()
             requests.append(publisher)
             return publisher.eraseToAnyPublisher()

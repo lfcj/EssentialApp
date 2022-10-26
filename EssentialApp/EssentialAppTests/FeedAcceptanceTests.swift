@@ -47,6 +47,13 @@ final class FeedAcceptanceTests: XCTestCase {
 
         XCTAssertNotNil(store.feedCache, "Expected to keep expired cache")
     }
+ 
+    func test_onFeedImageSelection_displaysComments() {
+        let comments = showCommentsForFirstImage()
+
+        XCTAssertEqual(comments.numberOfRenderedComments(), 1)
+        XCTAssertEqual(comments.commentMessage(at: 0), makeCommentMessage())
+    }
 
 }
 
@@ -79,6 +86,17 @@ private extension FeedAcceptanceTests {
     func enterBackground(with store: InMemoryFeedStore) {
         let sut = SceneDelegate(httpClient: HTTPClientStub.offline, store: store)
         sut.sceneWillResignActive(UIApplication.shared.connectedScenes.first!)
+    }
+
+    func showCommentsForFirstImage() -> ListViewController {
+        let feed = launch(httpClient: .online(response), store: .empty)
+
+        feed.simulateTapOnFeedImage(at: 0)
+        // Make sure everything is rendered correctly before getting the updated stack.
+        RunLoop.current.run(until: Date())
+
+        let nav = feed.navigationController
+        return nav?.topViewController as! ListViewController
     }
 
     final class HTTPClientStub: HTTPClient {
@@ -156,11 +174,18 @@ private extension FeedAcceptanceTests {
     }
 
     func makeData(for url: URL) -> Data {
-        switch url.absoluteString {
-        case "http://image.com":
+        switch url.path {
+        case "/image-1", "/image-2":
             return makeImageData()
-        default:
+
+        case "/essential-feed/v1/feed":
             return makeFeedData()
+
+        case "/essential-feed/v1/image/16E43B55-2A1D-46E3-AE81-89AF689A1CFC/comments":
+            return makeCommentsData()
+
+        default:
+            return Data()
         }
     }
 
@@ -172,13 +197,32 @@ private extension FeedAcceptanceTests {
         try! JSONSerialization.data(
             withJSONObject: [
                 "items": [
-                    ["id": UUID().uuidString, "image": "http://image.com"],
-                    ["id": UUID().uuidString, "image": "http://image.com"]
+                    ["id": "16E43B55-2A1D-46E3-AE81-89AF689A1CFC", "image": "http://feed.com/image-1"],
+                    ["id": "3E88AA2A-6DA7-4C02-B420-94E792AA434E", "image": "http://feed.com/image-2"]
                 ]
             ]
         )
     }
 
-    
+    func makeCommentsData() -> Data {
+        try! JSONSerialization.data(
+            withJSONObject: [
+                "items": [
+                    [
+                        "id": UUID().uuidString,
+                        "message": makeCommentMessage(),
+                        "created_at": "2020-08-28T15:07:02+00:00",
+                        "author": [
+                            "username": "a user"
+                        ]
+                    ],
+                ]
+            ]
+        )
+    }
+
+    func makeCommentMessage() -> String {
+        "a message"
+    }
 
 }
