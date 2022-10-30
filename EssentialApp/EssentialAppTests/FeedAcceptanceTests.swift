@@ -9,8 +9,8 @@ final class FeedAcceptanceTests: XCTestCase {
         let feed = launch(httpClient: .online(response), store: .empty)
 
         XCTAssertEqual(feed.numberOfRenderedFeedImageViews(), 2)
-        XCTAssertEqual(feed.renderedFeedImageData(at: 0), makeImageData())
-        XCTAssertEqual(feed.renderedFeedImageData(at: 1), makeImageData())
+        XCTAssertEqual(feed.renderedFeedImageData(at: 0), makeImageData0())
+        XCTAssertEqual(feed.renderedFeedImageData(at: 1), makeImageData1())
     }
 
     func test_onLaunch_displaysCachedFeedWhenUserHasNoConnectivity() {
@@ -22,8 +22,8 @@ final class FeedAcceptanceTests: XCTestCase {
         let offlineFeed = launch(httpClient: .offline, store: sharedStore)
 
         XCTAssertEqual(offlineFeed.numberOfRenderedFeedImageViews(), 2)
-        XCTAssertEqual(offlineFeed.renderedFeedImageData(at: 0), makeImageData())
-        XCTAssertEqual(offlineFeed.renderedFeedImageData(at: 1), makeImageData())
+        XCTAssertEqual(offlineFeed.renderedFeedImageData(at: 0), makeImageData0())
+        XCTAssertEqual(offlineFeed.renderedFeedImageData(at: 1), makeImageData1())
     }
 
     func test_onLaunch_displaysEmptyFeedWhenCustomerHasNoConnectivityAndNoCache() {
@@ -175,8 +175,11 @@ private extension FeedAcceptanceTests {
 
     func makeData(for url: URL) -> Data {
         switch url.path {
-        case "/image-1", "/image-2":
-            return makeImageData()
+        case "/image-0":
+            return makeImageData0()
+
+        case "/image-1":
+            return makeImageData1()
 
         case "/essential-feed/v1/feed":
             return makeFeedData()
@@ -189,16 +192,15 @@ private extension FeedAcceptanceTests {
         }
     }
 
-    func makeImageData() -> Data {
-        UIImage.make(color: .red).pngData()!
-    }
+    func makeImageData0() -> Data { UIImage.make(color: .red).pngData()! }
+    func makeImageData1() -> Data { UIImage.make(color: .green).pngData()! }
 
     func makeFeedData() -> Data {
         try! JSONSerialization.data(
             withJSONObject: [
                 "items": [
-                    ["id": "16E43B55-2A1D-46E3-AE81-89AF689A1CFC", "image": "http://feed.com/image-1"],
-                    ["id": "3E88AA2A-6DA7-4C02-B420-94E792AA434E", "image": "http://feed.com/image-2"]
+                    ["id": "16E43B55-2A1D-46E3-AE81-89AF689A1CFC", "image": "http://feed.com/image-0"],
+                    ["id": "3E88AA2A-6DA7-4C02-B420-94E792AA434E", "image": "http://feed.com/image-1"]
                 ]
             ]
         )
