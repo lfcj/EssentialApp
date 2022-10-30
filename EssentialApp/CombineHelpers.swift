@@ -20,6 +20,23 @@ public extension HTTPClient {
 
 }
 
+public extension Paginated {
+
+    var loadMorePublisher: (() -> AnyPublisher<Self, Error>)? {
+         guard let loadMoreHandler = loadMoreHandler else {
+             return nil
+         }
+
+        return {
+            Deferred {
+                Future(loadMoreHandler)
+                
+            }.eraseToAnyPublisher()
+        }
+    }
+
+ }
+
 public extension LocalFeedLoader {
 
     typealias Publisher = AnyPublisher<[FeedImage],  Error>
