@@ -70,7 +70,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
  
     private func makeRemoteFeedLoaderWithLocalFallback() -> LocalFeedLoader.PaginatedPublisher  {
         httpClient
-            .getPublisher(url: FeedEndpoint.get.url(baseURL: baseURL))
+            .getPublisher(url: FeedEndpoint.get().url(baseURL: baseURL))
             .tryMap(FeedItemsMapper.map)
             .caching(to: localFeedLoader)
             .fallback(to: localFeedLoader.loadPublisher)
