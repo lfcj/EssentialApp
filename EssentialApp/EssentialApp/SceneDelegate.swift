@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     private lazy var navigationController: UINavigationController = UINavigationController(
         rootViewController: FeedUIComposer.feedComposed(
-            withFeedLoader: makeFeedLoaderWithLocalFallback,
+            withFeedLoader: makeRemoteFeedLoaderWithLocalFallback,
             imageLoader: makeLocalImageLoaderWithRemoteFallback,
             selectionHandler: showComments
         )
@@ -68,12 +68,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }
  
-    private func makeFeedLoaderWithLocalFallback() -> LocalFeedLoader.Publisher  {
+    private func makeRemoteFeedLoaderWithLocalFallback() -> LocalFeedLoader.PaginatedPublisher  {
         httpClient
             .getPublisher(url: FeedEndpoint.get.url(baseURL: baseURL))
             .tryMap(FeedItemsMapper.map)
             .caching(to: localFeedLoader)
             .fallback(to: localFeedLoader.loadPublisher)
+            .map {
+                Paginated(items: $0)
+            }
+            .eraseToAnyPublisher()
     }
 
     private func makeLocalImageLoaderWithRemoteFallback(url: URL) -> FeedImageDataLoader.Publisher {

@@ -15,7 +15,7 @@
 		404BC5AB2907152800FD5296 /* CommonUIIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404BC5AA2907152800FD5296 /* CommonUIIntegrationTests.swift */; };
 		404BC5AE29071B4500FD5296 /* CommentsUIComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404BC5AC29071B4000FD5296 /* CommentsUIComposer.swift */; };
 		4068DA8C28931A8A00CEE66F /* FeedUIIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4068DA8B28931A8A00CEE66F /* FeedUIIntegrationTests.swift */; };
-		4068DA8E28931AC800CEE66F /* FeedViewControllerTests+LoaderSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4068DA8D28931AC800CEE66F /* FeedViewControllerTests+LoaderSpy.swift */; };
+		4068DA8E28931AC800CEE66F /* FeedUIIntegrationTests+LoaderSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4068DA8D28931AC800CEE66F /* FeedUIIntegrationTests+LoaderSpy.swift */; };
 		4068DA9228931B0500CEE66F /* ListViewControllerTests+TableViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4068DA9128931B0500CEE66F /* ListViewControllerTests+TableViewHelpers.swift */; };
 		4068DA9428931B2A00CEE66F /* FeedImageCell+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4068DA9328931B2A00CEE66F /* FeedImageCell+Helpers.swift */; };
 		4068DA9628931DF400CEE66F /* FeedAcceptanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4068DA9528931DF400CEE66F /* FeedAcceptanceTests.swift */; };
@@ -70,7 +70,7 @@
 		404BC5AA2907152800FD5296 /* CommonUIIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonUIIntegrationTests.swift; sourceTree = "<group>"; };
 		404BC5AC29071B4000FD5296 /* CommentsUIComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsUIComposer.swift; sourceTree = "<group>"; };
 		4068DA8B28931A8A00CEE66F /* FeedUIIntegrationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedUIIntegrationTests.swift; sourceTree = "<group>"; };
-		4068DA8D28931AC800CEE66F /* FeedViewControllerTests+LoaderSpy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FeedViewControllerTests+LoaderSpy.swift"; sourceTree = "<group>"; };
+		4068DA8D28931AC800CEE66F /* FeedUIIntegrationTests+LoaderSpy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FeedUIIntegrationTests+LoaderSpy.swift"; sourceTree = "<group>"; };
 		4068DA9128931B0500CEE66F /* ListViewControllerTests+TableViewHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ListViewControllerTests+TableViewHelpers.swift"; sourceTree = "<group>"; };
 		4068DA9328931B2A00CEE66F /* FeedImageCell+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FeedImageCell+Helpers.swift"; sourceTree = "<group>"; };
 		4068DA9528931DF400CEE66F /* FeedAcceptanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedAcceptanceTests.swift; sourceTree = "<group>"; };
@@ -178,7 +178,7 @@
 				4068DA9328931B2A00CEE66F /* FeedImageCell+Helpers.swift */,
 				8400A794288742EE00EE9C46 /* FeedImageDataLoaderSpy.swift */,
 				8400A7922887408600EE9C46 /* FeedImageDataLoaderTestCase.swift */,
-				4068DA8D28931AC800CEE66F /* FeedViewControllerTests+LoaderSpy.swift */,
+				4068DA8D28931AC800CEE66F /* FeedUIIntegrationTests+LoaderSpy.swift */,
 				84F5FE892883229E00AA82AE /* Helpers.swift */,
 				4068DA9128931B0500CEE66F /* ListViewControllerTests+TableViewHelpers.swift */,
 				84F5FE8B288322C700AA82AE /* XCTTestCase+TrackForMemoryLeaks.swift */,
@@ -305,7 +305,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4068DA9228931B0500CEE66F /* ListViewControllerTests+TableViewHelpers.swift in Sources */,
-				4068DA8E28931AC800CEE66F /* FeedViewControllerTests+LoaderSpy.swift in Sources */,
+				4068DA8E28931AC800CEE66F /* FeedUIIntegrationTests+LoaderSpy.swift in Sources */,
 				4068DA9428931B2A00CEE66F /* FeedImageCell+Helpers.swift in Sources */,
 				404BC5AB2907152800FD5296 /* CommonUIIntegrationTests.swift in Sources */,
 				4068DA9628931DF400CEE66F /* FeedAcceptanceTests.swift in Sources */,

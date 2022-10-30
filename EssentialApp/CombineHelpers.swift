@@ -23,6 +23,7 @@ public extension HTTPClient {
 public extension LocalFeedLoader {
 
     typealias Publisher = AnyPublisher<[FeedImage],  Error>
+    typealias PaginatedPublisher = AnyPublisher<Paginated<FeedImage>,  Error>
 
     func loadPublisher() -> Publisher {
         Deferred {
