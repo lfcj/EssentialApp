@@ -43,6 +43,10 @@ extension ListViewController {
     private var feedImagesSection: Int { 0 }
     private var feedLoadMoreSection: Int { 1 }
 
+    var isShowingLoadMoreFeedIndicator: Bool {
+        loadMoreFeedCell()?.isLoading == true
+    }
+
     func numberOfRenderedFeedImageViews() -> Int {
         tableView.numberOfSections == 0 ? 0 : tableView.numberOfRows(inSection: feedImagesSection)
     }
@@ -53,7 +57,7 @@ extension ListViewController {
     }
 
     func simulateLoadMoreFeedAction() {
-        guard let view = cell(row: 0, section: feedLoadMoreSection) else {
+        guard let view = loadMoreFeedCell() else {
             return
         }
 
@@ -99,6 +103,10 @@ extension ListViewController {
         let dataSource = tableView.prefetchDataSource
         let index = IndexPath(row: row, section: feedImagesSection)
         dataSource?.tableView?(tableView, cancelPrefetchingForRowsAt: [index])
+    }
+
+    private func loadMoreFeedCell() -> LoadMoreCell? {
+        cell(row: 0, section: feedLoadMoreSection) as? LoadMoreCell
     }
 
 }
