@@ -43,6 +43,20 @@ class FeedUIIntegrationTests: XCTestCase {
         XCTAssertEqual(loader.loadFeedCallCount, 3, "Expected a third loading requests once user initiates another load")
     }
 
+    func test_loadMoreCompletion_dispatchesFromBackgroundToMainThread() {
+        let (sut, loader) = makeSUT()
+        sut.loadViewIfNeeded()
+        loader.completeFeedLoading(at: 0)
+        sut.simulateLoadMoreFeedAction()
+
+        let exp = expectation(description: "Wait for background queue")
+        DispatchQueue.global().async {
+            loader.completeLoadMore()
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 1.0)
+    }
+
     func test_loadFeedCompletion_rendersErrorMessageOnErrorUntilNextReload() {
         let (sut, loader) = makeSUT()
 
@@ -133,7 +147,11 @@ class FeedUIIntegrationTests: XCTestCase {
         sut.loadViewIfNeeded()
         assertThat(sut, isRendering: [])
 
-        loader.completeFeedLoading(with: [image0, image1], at: 0)
+        loader.completeFeedLoading(with: [image0], at: 0)
+        assertThat(sut, isRendering: [image0])
+
+        sut.simulateLoadMoreFeedAction()
+        loader.completeLoadMore(with: [image0, image1], at: 0)
         assertThat(sut, isRendering: [image0, image1])
 
         sut.simulateUserInitiatedReload()
@@ -151,6 +169,10 @@ class FeedUIIntegrationTests: XCTestCase {
 
         sut.simulateUserInitiatedReload()
         loader.completeFeedLoadingWithError(at: 1)
+        assertThat(sut, isRendering: [image0])
+
+        sut.simulateLoadMoreFeedAction()
+        loader.completeLoadMoreWithError(at: 0)
         assertThat(sut, isRendering: [image0])
     }
 
