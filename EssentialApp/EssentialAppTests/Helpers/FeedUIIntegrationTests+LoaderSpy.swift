@@ -26,6 +26,7 @@ extension FeedUIIntegrationTests {
                     loadMorePublisher: { [weak self] in self?.loadMorePublisher() ?? Empty().eraseToAnyPublisher() }
                 )
             )
+            feedRequests[index].send(completion: .finished)
         }
 
         func completeFeedLoadingWithError(at index: Int = 0) {
