@@ -9,7 +9,7 @@ extension FeedImageCell {
     var descriptionText: String? { descriptionLabel.text }
     var isShowingImageLoadingIndicator: Bool { feedImageContainer.isShimmering }
     var renderedImage: Data? { feedImageView.image?.pngData() }
-    var isShowingRetryAcition: Bool { !feedImageRetryButton.isHidden }
+    var isShowingRetryAction: Bool { !feedImageRetryButton.isHidden }
 
     func simulateRetryAction() { feedImageRetryButton.simulateTap() }
 

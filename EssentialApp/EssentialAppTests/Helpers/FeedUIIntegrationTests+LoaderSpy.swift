@@ -4,7 +4,7 @@ import EssentialFeediOS
 import Foundation
 
 extension FeedUIIntegrationTests {
-    class LoaderSpy: FeedImageDataLoader {
+    class LoaderSpy {
 
         // MARK: - FeedLoader
 
@@ -39,30 +39,28 @@ extension FeedUIIntegrationTests {
 
         // MARK: - FeedImageDataLoader
 
-        private struct TaskSpy: FeedImageDataLoaderTask {
-            let cancelCallback: () -> Void
-            func cancel() { cancelCallback() }
+        typealias ImageRequestCompletion = (Swift.Result<Data, Error>) -> Void
+        var loadedImageURLs: [URL] {
+            imageRequests.map { $0.url }
         }
-
-        typealias ImageRequestCompletion = (FeedImageDataLoader.Result) -> Void
-        var loadedImageURLs: [URL] { imageRequests.map { $0.url } }
+        private(set) var imageRequests = [(url: URL, publisher: PassthroughSubject<Data, Error>)]()
         private(set) var cancelledImagesURLs = [URL]()
 
-        private var imageRequests = [(url: URL, completion: ImageRequestCompletion)]()
-
-        func loadImageData(from url: URL, completion: @escaping ImageRequestCompletion) -> FeedImageDataLoaderTask {
-            imageRequests.append((url, completion))
-            return TaskSpy { [weak self] in
+        func loadImageDataPublisher(from url: URL) -> AnyPublisher<Data, Error> {
+            let publisher = PassthroughSubject<Data, Error>()
+            imageRequests.append((url, publisher))
+            return publisher.handleEvents(receiveCancel: { [weak self] in
                 self?.cancelledImageURLs.append(url)
-            }
+            }).eraseToAnyPublisher()
         }
 
         func completeImageLoading(with imageData: Data = Data(), at index: Int = 0) {
-            imageRequests[index].completion(.success(imageData))
+            imageRequests[index].publisher.send(imageData)
+            imageRequests[index].publisher.send(completion: .finished)
         }
 
         func completeImageLoadingWithError(at index: Int = 0) {
-            imageRequests[index].completion(.failure(anyNSError()))
+            imageRequests[index].publisher.send(completion: .failure(anyNSError()))
         }
 
         // MARK: - LoadMoreFeedLoader
