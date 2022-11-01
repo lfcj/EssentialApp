@@ -78,14 +78,15 @@ public extension FeedImageDataLoader {
     typealias Publisher = AnyPublisher<Data,  Error>
 
     func loadImageDataPublisher(from url: URL) -> Publisher {
-        var task: FeedImageDataLoaderTask?
-
-        return Deferred {
+        Deferred {
             Future { completion in
-                task = self.loadImageData(from: url, completion: completion)
+                completion(
+                    Result {
+                        try self.loadImageData(from: url)
+                    }
+                )
             }
         }
-        .handleEvents(receiveCancel: { task?.cancel() })
         .eraseToAnyPublisher()
     }
 
@@ -167,6 +168,6 @@ private extension FeedCache {
 
 private extension FeedImageDataCache {
     func saveIgnoringResult(_ data: Data, for url: URL) {
-        self.save(data, for: url) { _ in }
+        try? self.save(data, for: url)
     }
 }
