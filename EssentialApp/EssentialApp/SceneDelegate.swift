@@ -2,6 +2,7 @@ import Combine
 import CoreData
 import EssentialFeed
 import EssentialFeediOS
+import os
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -9,6 +10,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     private lazy var httpClient: HTTPClient = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
+    private lazy var logger = Logger(subsystem: "lfcj.EssentialApp", category: "main")
     private lazy var localStore: FeedStore & FeedImageDataStore = {
         do {
             return try CoreDataFeedStore(
@@ -18,6 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             )
         } catch {
             assertionFailure("Failed to instantiate CoreData store with error: \(error.localizedDescription)")
+            logger.fault("Failed to instantiate CoreData store with error: \(error.localizedDescription)")
             return NullStore()
         }
     }()
