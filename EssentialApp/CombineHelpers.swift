@@ -205,7 +205,7 @@ struct AnyScheduler<SchedulerTimeType: Strideable, SchedulerOptions>: Scheduler 
 
 private extension FeedCache {
     func saveIgnoringResult(_ feed: [FeedImage]) {
-        self.save(feed) { _ in }
+        try? self.save(feed)
     }
     func saveIgnoringResult(_ page: Paginated<FeedImage>) {
         saveIgnoringResult(page.items)
