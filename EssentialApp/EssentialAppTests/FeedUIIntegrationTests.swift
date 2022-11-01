@@ -103,7 +103,7 @@ class FeedUIIntegrationTests: XCTestCase {
         assertThat(sut, isRendering: [image0, image1])
 
         sut.simulateLoadMoreFeedAction()
-        loader.completeFeedLoading(with: [image0, image1, image2, image3], at: 0)
+        loader.completeLoadMore(with: [image0, image1, image2, image3], at: 0)
         assertThat(sut, isRendering: [image0, image1, image2, image3])
 
         sut.simulateUserInitiatedReload()
