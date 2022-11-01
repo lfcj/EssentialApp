@@ -84,6 +84,7 @@ private extension FeedAcceptanceTests {
 
     func launch(httpClient: HTTPClientStub, store: InMemoryFeedStore) -> ListViewController {
         let sut = makeSUT(store: store, httpClient: httpClient)
+        sut.window = UIWindow(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
         sut.configureWindow()
 
         let nav = sut.window?.rootViewController as? UINavigationController
