@@ -215,6 +215,7 @@ class CommonUIIntegrationTests: XCTestCase {
 
         func completeCommentsLoading(with comments: [ImageComment] = [], at index: Int = 0) {
             requests[index].send(comments)
+            requests[index].send(completion: .finished)
         }
 
         func completeCommentsLoadingWithError(at index: Int = 0) {
