@@ -164,11 +164,6 @@ private extension FeedAcceptanceTests {
             completion(.success(()))
         }
 
-        func insert(_ data: Data, for url: URL, completion: @escaping (InsertionResult) -> Void) {
-            feedImageDataCache[url] = data
-            completion(.success(()))
-        }
-
         func insert(_ data: Data, for url: URL) throws {
             feedImageDataCache[url] = data
         }
@@ -179,10 +174,6 @@ private extension FeedAcceptanceTests {
 
         func retrieve(completion: @escaping RetrievalCompletion) {
             completion(.success(feedCache))
-        }
-
-        func retrieve(dataForURL url: URL, completion: @escaping (FeedImageDataStore.RetrievalResult) -> Void) {
-            completion(.success(feedImageDataCache[url]))
         }
 
         static var empty: InMemoryFeedStore {
