@@ -9,11 +9,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     private lazy var httpClient: HTTPClient = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
-    private lazy var localStore: FeedStore & FeedImageDataStore = try! CoreDataFeedStore(
-        storeURL: NSPersistentContainer
-            .defaultDirectoryURL()
-            .appendingPathComponent("feed-store.sqlite")
-    )
+    private lazy var localStore: FeedStore & FeedImageDataStore = {
+        do {
+            return try CoreDataFeedStore(
+                storeURL: NSPersistentContainer
+                    .defaultDirectoryURL()
+                    .appendingPathComponent("feed-store.sqlite")
+            )
+        } catch {
+            return NullStore()
+        }
+    }()
+
     private lazy var localFeedLoader = LocalFeedLoader(store: localStore, currentDate: Date.init)
 
     private lazy var baseURL = URL(string: "https://ile-api.essentialdeveloper.com/essential-feed")!
