@@ -466,7 +466,7 @@ class FeedUIIntegrationTests: XCTestCase {
         sut.simulateFeedImageViewVisible(at: 0)
         XCTAssertEqual(loader.loadedImageURLs, [image.url, image.url], "Expected second request when visible after previous complete")
 
-        sut.simulateFeedImageViewNearlyVisible(at: 0)
+        sut.simulateFeedImageViewNotNearlyVisible(at: 0)
         sut.simulateFeedImageViewVisible(at: 0)
         XCTAssertEqual(loader.loadedImageURLs, [image.url, image.url, image.url], "Expected third request when visible after canceling previous complete")
 
