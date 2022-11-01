@@ -154,15 +154,21 @@ private extension FeedAcceptanceTests {
             self.feedCache = feedCache
         }
 
-        func deleteCachedFeed(completion: @escaping DeletionCompletion) {
+        // MARK: - FeedStore
+
+        func deleteCachedFeed() throws {
             feedCache = nil
-            completion(.success(()))
         }
 
-        func insert(_ feed: [LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion) {
-            feedCache = CachedFeed(feed: feed, timestamp: timestamp)
-            completion(.success(()))
+        func insert(_ feed: [LocalFeedImage], timestamp: Date) throws {
+            feedCache = (feed: feed, timestamp: timestamp)
         }
+
+        func retrieve() throws -> CachedFeed? {
+            feedCache
+        }
+
+        // MARK: - FeedImageDataStore
 
         func insert(_ data: Data, for url: URL) throws {
             feedImageDataCache[url] = data
@@ -172,9 +178,7 @@ private extension FeedAcceptanceTests {
             feedImageDataCache[url]
         }
 
-        func retrieve(completion: @escaping RetrievalCompletion) {
-            completion(.success(feedCache))
-        }
+        // MARK: - Helpers
 
         static var empty: InMemoryFeedStore {
             InMemoryFeedStore()
