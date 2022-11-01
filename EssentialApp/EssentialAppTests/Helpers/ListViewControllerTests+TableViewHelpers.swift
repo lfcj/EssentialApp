@@ -25,8 +25,12 @@ extension ListViewController {
         refreshControl?.simulatePullToRefresh()
     }
 
+    func numberOfRows(in section: Int) -> Int {
+        tableView.numberOfSections > section ? tableView.numberOfRows(inSection: section) : 0
+    }
+
     func cell(row: Int, section: Int) -> UITableViewCell? {
-        guard tableView.numberOfSections > section, tableView.numberOfRows(inSection: section) > row else {
+        guard numberOfRows(in: section) > row else {
             return nil
         }
 
@@ -56,7 +60,7 @@ extension ListViewController {
     }
 
     func numberOfRenderedFeedImageViews() -> Int {
-        tableView.numberOfSections == 0 ? 0 : tableView.numberOfRows(inSection: feedImagesSection)
+        numberOfRows(in: feedImagesSection)
     }
 
     @discardableResult
