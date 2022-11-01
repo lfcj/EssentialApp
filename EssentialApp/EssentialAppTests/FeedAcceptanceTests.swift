@@ -169,6 +169,14 @@ private extension FeedAcceptanceTests {
             completion(.success(()))
         }
 
+        func insert(_ data: Data, for url: URL) throws {
+            feedImageDataCache[url] = data
+        }
+
+        func retrieve(dataForURL url: URL) throws -> Data? {
+            feedImageDataCache[url]
+        }
+
         func retrieve(completion: @escaping RetrievalCompletion) {
             completion(.success(feedCache))
         }
